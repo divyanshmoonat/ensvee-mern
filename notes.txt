@@ -1,0 +1,77 @@
+MongoDB => Its a NoSQL database.
+
+Sql Database : MySQL, MSSql, PostgreSQL etc
+NoSql Database : MongoDB, Cassendra DB etc.
+
+
+Student related fields  : 
+1. Enrollment No
+2. Name
+3. Mobile
+4. Address
+
+SQL Databases : 
+Database
+    Tables
+        Row
+        Col
+
+NoSQL Databases : 
+Database
+    Collection
+        Documents
+            Key-Value pairs (Objects)
+
+DBs can be operated in 2 ways : 
+1. CLI (Command Line Interface) : Default way
+2. GUI (Graphical User Interface) : Additonal Download
+
+
+MySQL GUI : MySQL Workbench, Navicat (Paid)
+MongoDB : MongoDB Compass, Robo Mongo
+
+MongoDB stores BSON data
+
+
+SQL : localhost:3306
+select <database-name>;
+select * from <table-name>;
+
+
+MongoDB : localhost:27017
+show dbs : To view a list of databases
+use <database-name>
+show collections
+db.<collection-name>.find()
+
+
+
+Database always runs on server : Database Server
+
+C / C++
+
+
+select * from users where lastName = "A";
+db.users.find({lastName: "A"})
+
+
+select * from users where firstName = "Peter" and lastName = "B";
+db.users.find({firstName: "Peter",lastName: "B"})
+
+update users set email="qunitus@example.com" where firstName = "Quintus"
+
+Methods : 
+    insertOne()
+    insertMany()
+
+    findOne()
+    find()
+
+    updateOne({searchObj},{$set:{updateObj}})
+    updateMany({searchObj},{$set:{updateObj}})
+
+    deleteOne({conditionalObj})
+    deleteMany({conditionalObj})
+
+
+Reference URL : https://www.mongodb.com/docs/mongodb-shell/crud/

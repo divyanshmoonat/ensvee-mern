@@ -1,13 +1,28 @@
 const express = require("express"); // Step 1 : Import express module
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
-const usersList = require("./mockData/users.json");
+const userRoutes = require("./routes/users");
 
 const app = express(); // Step 2 : Create express app
 
 const jsonParser = bodyParser.json();
 app.use(jsonParser); // Middleware
 
+// DB Connection
+//                driver://dbhost:dbport/dbname
+mongoose
+  .connect("mongodb://localhost:27017/todos")
+  .then(() => {
+    console.log("MongoDB Connected Successfully");
+  })
+  .catch((err) => {
+    console.log("Error in Connecting with MongoDB", err);
+  });
+
+// API End points (module wise)
+
+app.use(`/api/v1/users`, userRoutes);
 // Step 3 : Define API end points/routes
 
 // app.<Method>(<EndPoint>,<CallBack Fn>);
@@ -18,65 +33,6 @@ app.get("/", (req, res) => {
     success: true,
     message: "Server is running fine",
   });
-});
-
-app.get("/users", (req, res) => {
-  const output = {
-    success: true,
-    users: usersList,
-  };
-
-  res.status(200).json(output);
-});
-
-app.get("/getUserById/:id", (req, res) => {
-  const id = req.params.id;
-  const numericId = parseInt(id);
-  if (!numericId) {
-    return res.status(400).json({
-      success: false,
-      user: {},
-    });
-  }
-  const user = usersList.find((user) => user.id == id);
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      user: {},
-    });
-  }
-  // Dynamic REST EndPoint
-  const output = {
-    success: true,
-    user: user,
-  };
-  res.json(output);
-});
-
-app.get("/user", (req, res) => {
-  const searchKey = req.query.search.toLowerCase();
-  const users = usersList.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchKey) ||
-      user.email.toLowerCase().includes(searchKey) ||
-      user.username.toLowerCase().includes(searchKey)
-  );
-  if (users.length === 0) {
-    res.status(204).json();
-  }
-  res.json({
-    success: true,
-    users: users,
-  });
-  console.log(searchKey);
-});
-
-app.post("/create-user", (req, res) => {
-  console.log(req.body);
-  // Save this data into DB.
-  res
-    .status(201)
-    .json({ success: true, message: "New user created successfully." });
 });
 
 // Step 4 : Register your app on a port

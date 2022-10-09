@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 
 const userDbService = require("../dbService/usersDbService");
 
@@ -30,10 +31,29 @@ router.get("/list", async (req, res) => {
 });
 
 router.post("/create-user", async (req, res) => {
-  console.log(req.body);
+  //   console.log(req.body);
   // Save this data into DB.
   try {
-    await userDbService.createNewUser(req.body);
+    // LOGIN API IMPLEMENTATION BELOW
+    // const salt = await bcrypt.genSalt(10);
+    // const encryptedPassword = await bcrypt.hash(req.body.password, salt);
+    // const isPasswordCorrect = await bcrypt.compare(
+    //   "123456",
+    //   "$2b$10$Yd/oRLBqR88qMPzDpl78xu/j2rh/uh1DU3eGgqx/FzVRa25hzyq6e"
+    // );
+    // if (isPasswordCorrect) {
+    //   console.log("Correct password");
+    // } else {
+    //   res
+    //     .status(401)
+    //     .json({ success: false, message: "Invalid username or password" });
+    //   console.log("Incorrect passsword");
+    // }
+    // console.log(salt);
+    await userDbService.createNewUser({
+      ...req.body,
+      password: encryptedPassword,
+    });
     res
       .status(201)
       .json({ success: true, message: "New user created successfully." });
